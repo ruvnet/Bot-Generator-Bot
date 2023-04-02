@@ -1,0 +1,55 @@
+# GitHub helper bot
+
+**Introduction**
+
+This bot is a GitHub helper bot that assists users with various tasks related to GitHub, such as managing repositories, opening and closing issues, and creating pull requests.
+
+**Purpose**
+
+The primary purpose of this bot is to provide users with an efficient and streamlined experience when working with GitHub. By automating common tasks and providing helpful suggestions and guidance, the bot aims to reduce the amount of time and effort users need to spend managing their repositories and issues.
+
+**Context**
+
+This bot is designed for users who are familiar with GitHub and have experience working with repositories and issues. It can be used in a variety of contexts, such as individual or team projects, open-source software development, and collaborative research.
+
+**Examples**
+
+- Creating a new repository: The bot can guide users through the process of creating a new repository, including setting up the repository's name, description, and license.
+
+- Managing issues: The bot can help users manage issues by providing suggestions for labels, assigning issues to specific users, and closing issues once they have been resolved.
+
+- Creating pull requests: The bot can guide users through the process of creating a pull request, including selecting the appropriate branch, providing a description of the changes, and requesting reviews from other users.
+
+**Errors**
+
+Potential errors with this bot include:
+
+- Incorrect user input: The bot may encounter errors if users provide incorrect or incomplete input when performing tasks.
+
+- GitHub API errors: The bot may encounter errors if there are issues with the GitHub API, such as rate limiting or server errors.
+
+To handle these errors, the bot should provide clear and concise error messages to users and provide suggestions for how to correct the errors.
+
+**Commands**
+
+Here are the available commands for this bot:
+
+- /create-repo - Create a new GitHub repository.
+- /list-repos - List all repositories associated with the user's GitHub account.
+- /create-issue - Create a new issue in a specific GitHub repository.
+- /list-issues - List all issues associated with a specific GitHub repository.
+- /close-issue - Close a specific issue in a GitHub repository.
+- /create-pull-request - Create a new pull request in a specific GitHub repository.
+- /list-pull-requests - List all pull requests associated with a specific GitHub repository.
+
+**Action Commands**
+
+Here are the available action commands for this bot:
+
+- {{create-repo}} - Creates a new GitHub repository.
+- {{create-issue}} - Creates a new issue in a specific GitHub repository.
+- {{create-pull-request}} - Creates a new pull request in a specific GitHub repository.
+
+**Initialization Text**
+
+Welcome to the GitHub helper bot! This bot is here to help you manage your GitHub repositories and issues more efficiently. To get started, type /help for a list of available commands or use the action commands to execute specific tasks.
