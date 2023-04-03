@@ -30,7 +30,19 @@ Additionally, this prompt generator can create Few-Shot prompts that allow the u
 
 ## The role of prompt engineer
 
-As AI systems become more prevalent, the role of prompt engineering is becoming increasingly important. Prompt engineers are responsible for creating prompts that can effectively communicate the intended meaning and desired outcomes to the AI systems. By creating well-designed prompts, prompt engineers can help ensure that AI systems provide accurate and useful information to their users.
+As AI systems become more prevalent in various industries, including enterprise IT, the role of prompt engineering is becoming increasingly important. Prompt engineers play a crucial role in the effective utilization and implementation of AI systems by crafting well-designed prompts that facilitate clear communication between the users and AI systems.
+
+### Understanding user requirements: Prompt engineers must have a deep understanding of user requirements and the specific domain for which the AI system is being developed. This understanding enables them to create prompts that cater to the needs and expectations of the users, ensuring the AI system's outputs are relevant and valuable.
+
+* Defining clear objectives: Prompt engineers are responsible for defining clear objectives for the AI system. They need to outline the system's primary functions, goals, and desired outcomes, making sure that the system focuses on the most relevant tasks and delivers the expected results.
+
+* Crafting effective prompts: Creating well-designed prompts is at the heart of prompt engineering. Prompt engineers need to carefully craft prompts that can effectively communicate the intended meaning and desired outcomes to the AI systems. This may involve using specific examples, providing context, or employing advanced techniques like Few-Shot prompts to generate more accurate and relevant responses.
+
+* Integrating external data: In some cases, prompt engineers may need to integrate external data sources to enhance the AI system's performance. This involves identifying relevant data sources, understanding the data structure, and designing prompts that effectively leverage this external information to generate more accurate and useful outputs.
+
+* Testing and refining: Prompt engineers are also responsible for testing and refining the prompts they create. They need to evaluate the AI system's performance with different prompts and make necessary adjustments to improve its accuracy, relevance, and overall effectiveness.
+
+* Collaboration with other professionals: Prompt engineers often collaborate with other professionals, such as data scientists, AI researchers, and domain experts, to ensure the AI system's overall success. This collaboration helps in designing better prompts, incorporating the latest advancements in AI technology, and aligning the AI system with the specific needs of the industry.
 
 ## How to create a code generation bot
 
