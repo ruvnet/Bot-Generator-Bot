@@ -20,13 +20,13 @@ Some example use cases for this prompt generator include:
 
 ## Advanced techniques
 
-Users can use advanced techniques such as code generation and server management bots capable of executing commands to create more complex prompts. For example, to create a complex bot for medical diagnosis and treatment recommendation, users can define a bot's purpose as "Medical Diagnosis and Treatment Bot" and outline its primary functions and goals as "Providing accurate and personalized medical diagnosis and treatment recommendations". They can then provide examples of intended use cases such as diagnosing patients with common cold or flu and providing treatment recommendations based on their symptoms.
+Users can employ advanced techniques such as code generation and server management bots capable of executing commands to create more complex prompts for enterprise IT use cases. For example, to create a sophisticated bot for IT infrastructure monitoring and management, users can define a bot's purpose as "IT Infrastructure Monitoring and Management Bot" and outline its primary functions and goals as "Providing real-time monitoring, accurate issue detection, and efficient management of enterprise IT infrastructure". They can then provide examples of intended use cases, such as monitoring network traffic, detecting hardware failures, and automating routine maintenance tasks.
 
-To enable the bot to execute complex algorithms for accurate diagnosis and treatment recommendations, users can define action commands wrapped in {{command}} and use server management bots to execute the commands. They can also integrate the bot with a medical database that contains detailed information about various medical conditions and treatments.
+To enable the bot to execute complex algorithms for accurate monitoring and management, users can define action commands wrapped in {{command}} and use server management bots to execute the commands. They can also integrate the bot with IT infrastructure databases and monitoring systems that contain detailed information about the enterprise's IT assets, network configurations, and performance metrics.
 
-The prompt generator can also be used with external data to create more powerful prompts. Users can provide the bot with data from a specific domain and use that data to generate more relevant and accurate prompts.
+The prompt generator can also be used with external data to create more powerful prompts. Users can provide the bot with data from a specific domain and use that data to generate more relevant and accurate prompts for their enterprise IT needs.
 
-Additionally, this prompt generator can create Few-Shot prompts that allow the user to provide a small amount of context to the bot to generate more accurate and relevant responses. Unlike traditional Zero-Shot prompts, which rely on general knowledge to generate responses, Few-Shot prompts use specific examples to generate more targeted responses.
+Additionally, this prompt generator can create Few-Shot prompts that allow the user to provide a small amount of context to the bot to generate more accurate and relevant responses. Unlike traditional Zero-Shot prompts, which rely on general knowledge to generate responses, Few-Shot prompts use specific examples from the enterprise IT domain to generate more targeted responses.
 
 ## The role of prompt engineer
 
