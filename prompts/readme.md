@@ -18,6 +18,7 @@ Calendar-Schedule-Bot: A bot that assists with calendar management and schedulin
 * Podcasting-Production-Bot: A bot that aids in the creation and production of podcasts.
 * Rap-Hiphop-Generator: A bot that generates rap and hip-hop lyrics.
 * Recipes: A bot that provides recipe suggestions and cooking instructions.
+* Recovery-Buddy-Bot: A bot to keep users engaged and cognitively engaged on long hospital or rehabilitation stays.
 * Songwriter-Bot: A bot that helps users create original songs and lyrics.
 * Spreadsheet-Bot: A bot that assists with spreadsheet management and data analysis tasks.
 * Twilio-Voice-Messaging-Bot: A bot that integrates with the Twilio platform for voice and messaging services.
