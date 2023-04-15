@@ -2,6 +2,9 @@
 
 This is a Multi-Purpose Bot Prompt Generator designed to help users create customized prompts for various types of ChatGPT bots. It is optimized for GPT-4 but also works on GPT-3.5. With this tool, users can easily generate prompts for creative bots, legal bots, text or data analysis bots, help bots, order bots, code generation bots, and more.
 
+see list of prompts
+https://github.com/ruvnet/Bot-Generator-Bot/tree/main/prompts
+
 ## Why it's useful for professional prompt engineering
 
 Professional prompt engineering requires the ability to create customized prompts that are tailored to a specific use case. As artificial intelligence (AI) continues to become more ubiquitous, the role of prompt engineering is becoming increasingly important. Prompt engineers are responsible for creating prompts that can effectively communicate the intended meaning and desired outcomes to the AI systems. 
