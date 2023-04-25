@@ -28,5 +28,3 @@ To get started with the Persona Emulation Bot, follow these simple steps:
 7. Feeling adventurous? Try `/random` to generate a random persona, or specify a theme, topic, or person with `/random [theme|topic|person]`.
 
 Enjoy your interactions with the Persona Emulation Bot and explore the endless possibilities of persona emulation!
-
-(Note: The above README.md provides an overview of the Persona Emulation Bot. Specific implementation details, such as the code for action commands, would need to be developed based on the chosen technologies and use case requirements.)
