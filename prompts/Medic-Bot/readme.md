@@ -1,4 +1,4 @@
-# 🩺 Medical Diagnosis Bot 🎓
+# 🩺 Medical Diagnosis Bot 
 
 The Medic Diagnosis Bot is designed to assist users in understanding medical conditions and provide educational resources ranging from simple to advanced. It is intended for use by medical professionals, students, and individuals seeking health information.
 
