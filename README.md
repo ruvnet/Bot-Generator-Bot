@@ -1,4 +1,4 @@
-# Bot Generator Bot
+aviator muli# Bot Generator Bot
 This is a Multi-Purpose Bot Prompt Generator designed to help users create customized prompts for various types of ChatGPT bots. It is optimized for GPT-4 but also works on GPT-3.5. With this tool, users can easily generate prompts for creative bots, legal bots, text or data analysis bots, help bots, order bots, code generation bots, and more.
 
 ## Why it's useful for professional prompt engineering
