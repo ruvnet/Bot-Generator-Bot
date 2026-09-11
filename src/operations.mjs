@@ -7,7 +7,7 @@ export function benchmark(){const spec=fromTemplate('support');for(let i=0;i<100
 export async function validateProject(){
  if(process.env.BOT_ALLOW_VALIDATION!=='1')throw Error('Operator validation opt-in required');if(busy)throw Error('Busy');busy=true;
  try{return await new Promise((resolve,reject)=>{
-  const child=spawn(process.execPath,['--test','test/compiler.test.mjs','test/mcp.test.mjs'],{cwd:root,env:{PATH:process.env.PATH||''},detached:process.platform!=='win32',stdio:['ignore','pipe','pipe']});let size=0,output='',failure;
+  const child=spawn(process.execPath,['--test','test/compiler.test.mjs','test/mcp.test.mjs','test/agent.test.mjs','test/agent-memory.test.mjs','test/agent-provider.test.mjs'],{cwd:root,env:{PATH:process.env.PATH||''},detached:process.platform!=='win32',stdio:['ignore','pipe','pipe']});let size=0,output='',failure;
   const stop=()=>{try{process.kill(process.platform==='win32'?child.pid:-child.pid,'SIGKILL');}catch{}};
   const timer=setTimeout(()=>{failure=Error('Timeout');stop();},30000);
   for(const stream of [child.stdout,child.stderr])stream.on('data',chunk=>{size+=chunk.length;if(size>65536){failure=Error('Output bound');stop();}else output+=chunk;});

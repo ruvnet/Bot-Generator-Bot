@@ -1,1 +1,25 @@
-{"name":"@ruvnet/bot-generator-bot","version":"2.0.0-alpha.1","private":true,"type":"module","engines":{"node":">=24"},"scripts":{"test":"node --test test/*.test.mjs","benchmark":"node src/cli.mjs benchmark","start":"node src/cli.mjs mcp"},"dependencies":{"@modelcontextprotocol/server":"2.0.0","@modelcontextprotocol/client":"2.0.0"}}
+{
+  "name": "@ruvnet/bot-generator-bot",
+  "version": "2.0.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "benchmark": "node src/cli.mjs benchmark",
+    "start": "node src/cli.mjs mcp"
+  },
+  "dependencies": {
+    "@claude-flow/cli": "3.25.6",
+    "@metaharness/kernel": "0.1.3",
+    "@modelcontextprotocol/client": "2.0.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "@ruvector/core": "0.1.32",
+    "ruvector-core-linux-x64-gnu": "0.1.30"
+  },
+  "overrides": {
+    "qs": "6.16.0"
+  }
+}
