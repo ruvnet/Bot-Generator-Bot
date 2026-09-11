@@ -1,0 +1,15 @@
+{
+  "spec": {
+    "context": "A human reviews the draft before sending.",
+    "examples": [
+      "Explain a documented installation step."
+    ],
+    "name": "Support assistant",
+    "output": {
+      "answer": "string",
+      "needsReview": "boolean"
+    },
+    "purpose": "Draft a factual support response from supplied product information. Mark missing evidence.",
+    "tools": []
+  }
+}

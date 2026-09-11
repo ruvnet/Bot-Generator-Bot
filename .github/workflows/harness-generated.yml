@@ -1,0 +1,40 @@
+name: MetaHarness and Autogenous
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: .harness/generated/package-lock.json
+      - run: npm ci --prefix .harness/generated
+      - run: npm test --prefix .harness/generated
+      - run: npm run build --prefix .harness/generated
+      - run: npm run doctor --prefix .harness/generated
+      - run: npm audit --prefix .harness/generated --audit-level=low
+      - run: npm run verify:review --prefix .harness/generated
+      - run: npm run bench:generate --prefix .harness/generated
+      - run: npm run bench:verify --prefix .harness/generated
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --locked --manifest-path .harness/autogenous/Cargo.toml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: harness-hosts-skills-evaluation
+          include-hidden-files: true
+          path: |
+            .harness/generated/dist/
+            .harness/generated/.codex/
+            .harness/generated/.claude/
+            .harness/generated/.vscode/
+            .harness/generated/bench.generated.json
+            .harness/generated/review-manifest.json

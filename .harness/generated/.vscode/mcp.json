@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "bot-generator-bot-agent": {
+      "command": "node",
+      "args": [
+        ".harness/generated/bin/cli.js",
+        "mcp"
+      ]
+    }
+  }
+}

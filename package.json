@@ -1,0 +1,1 @@
+{"name":"@ruvnet/bot-generator-bot","version":"2.0.0-alpha.1","private":true,"type":"module","engines":{"node":">=24"},"scripts":{"test":"node --test test/*.test.mjs","benchmark":"node src/cli.mjs benchmark","start":"node src/cli.mjs mcp"},"dependencies":{"@modelcontextprotocol/server":"2.0.0","@modelcontextprotocol/client":"2.0.0"}}

@@ -1,0 +1,8 @@
+node_modules/
+.claude-flow/
+.swarm/
+*.log
+.env*
+!.env.example
+.harness/**/target/
+artifacts/
