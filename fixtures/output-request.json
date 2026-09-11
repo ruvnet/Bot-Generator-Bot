@@ -1,0 +1,10 @@
+{
+  "schema": {
+    "answer": "string",
+    "needsReview": "boolean"
+  },
+  "value": {
+    "answer": "Install the documented dependencies.",
+    "needsReview": true
+  }
+}

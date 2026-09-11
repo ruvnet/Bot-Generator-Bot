@@ -1,0 +1,10 @@
+import {boundedJSON} from './limits.mjs';
+export const OPENAI_ENDPOINT='https://api.openai.com/v1/chat/completions';
+export async function readBoundedJSON(response,signal,max=32768){if(!response.ok)throw Error('Provider request failed');const reader=response.body?.getReader();if(!reader)throw Error('Provider body missing');let bytes=0,frames=0;const chunks=[];const cancel=()=>{void reader.cancel().catch(()=>{});};signal.addEventListener('abort',cancel,{once:true});try{while(true){signal.throwIfAborted();if(++frames>4096)throw Error('Provider frame bound');const{done,value}=await reader.read();signal.throwIfAborted();if(done)break;bytes+=value.length;if(bytes>max)throw Error('Provider output bound');chunks.push(value);}return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)));}finally{signal.removeEventListener('abort',cancel);void reader.cancel().catch(()=>{});}}
+export function createOpenAIModel(config,limits){
+ if(config.allowLive!==true||typeof config.apiKey!=='string'||config.apiKey.length<16||typeof config.modelName!=='string'||!config.modelName.trim()||config.modelName.length>100)throw Error('Explicit live provider configuration required');
+ return async(messages,{signal})=>{
+ const body={model:config.modelName,messages:[{role:'system',content:'Respond with exactly one JSON object: {"output": <final output object>} OR {"toolCalls":[{"name":"search","arguments":{"query":"..."}}]}. Available tool names and policies are supplied in the following system message. Never invent tool results.'},...messages],response_format:{type:'json_object'},max_completion_tokens:limits.maxTokensPerTurn};
+ const response=await fetch(OPENAI_ENDPOINT,{method:'POST',redirect:'error',headers:{'content-type':'application/json',authorization:'Bearer '+config.apiKey},body:boundedJSON(body,65536),signal});const result=await readBoundedJSON(response,signal,limits.maxResponseBytes);const content=result.choices?.[0]?.message?.content;if(typeof content!=='string')throw Error('Provider response schema');return JSON.parse(content);
+ };
+}

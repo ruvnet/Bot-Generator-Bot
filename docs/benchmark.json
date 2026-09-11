@@ -1,0 +1,8 @@
+{
+  "samples": 1000,
+  "warmups": 100,
+  "p50Ms": 0.01864800000004152,
+  "p95Ms": 0.05468300000001136,
+  "node": "v24.19.0",
+  "scope": "local deterministic compiler only; no model quality or SOTA claim"
+}

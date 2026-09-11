@@ -1,0 +1,28 @@
+name: Bot agent validation and delivery
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: node src/cli.mjs test
+      - run: npm audit --audit-level=moderate
+      - run: node src/cli.mjs benchmark > benchmark.json
+      - run: node src/agent/benchmark.mjs > agent-benchmark.json
+      - run: tar -czf bot-generator.tgz src test fixtures .npmrc package.json package-lock.json README.md docs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bot-generator-validated
+          path: |
+            bot-generator.tgz
+            benchmark.json
+            agent-benchmark.json

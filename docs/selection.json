@@ -1,0 +1,12 @@
+{
+  "observedAt": "2026-09-11",
+  "query": "user:ruvnet fork:false archived:false pushed:<2025-09-11",
+  "sort": "stars desc",
+  "eligibleCount": 108,
+  "selected": "ruvnet/Bot-Generator-Bot",
+  "stars": 579,
+  "lastPushAtSelection": "2023-04-29T20:38:56Z",
+  "baseline": "502bde81f7c1e346bd081e4ed15d88620a3aee79",
+  "source": "https://api.github.com/search/repositories",
+  "limitation": "Push inactivity, not all personal work"
+}

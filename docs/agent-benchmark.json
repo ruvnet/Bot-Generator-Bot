@@ -1,0 +1,13 @@
+{
+  "scope": "64 deterministic lexical fixtures; no learned embeddings, live provider, model quality or SOTA claim",
+  "backend": "@ruvector/core@0.1.32",
+  "dimension": 256,
+  "queries": 64,
+  "recallAt3": 1,
+  "top1CosineOracleAgreement": 1,
+  "p50Ms": 0.376308999999992,
+  "p95Ms": 1.0356760000000236,
+  "averageRetrievedContextBytes": 1510.0625,
+  "fullLedgerBytes": 25837,
+  "contextReductionFraction": 0.941554263265859
+}
