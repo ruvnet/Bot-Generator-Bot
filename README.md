@@ -39,15 +39,99 @@ The compiler input is `{ "spec": { "name", "purpose", "context", "examples", "ou
 
 Set `BOT_ALLOWED_TOOLS=search` locally to permit a specification to request the catalog's search tool. The agent runtime separately enforces the operator grant. Its supported tool is local memory `search`; other catalog tools are reserved and fail closed in this runtime. No tokens or provider credentials belong in specifications. `verify` checks manifest consistency, not authorship: an attacker can create a different consistent manifest.
 
-## Use from an MCP host
+## Install the agent skill
+
+The skill guides Claude Code and Codex through designing, validating and packaging an agent. Install it into the project where you want to use it:
 
 ```sh
-node src/cli.mjs mcp
+npx -y skills@1.5.25 add ruvnet/Bot-Generator-Bot --skill bot-generator --agent claude-code codex --copy --yes
+npx -y skills@1.5.25 list --json
 ```
 
-Configure your host with command `node` and the absolute path to `src/cli.mjs`, followed by `mcp`. MCP tools are `status`, `templates`, `template`, `compile`, `validate`, `verify`, `test`, `benchmark`, `agent_plan`, `agent_run`, and `agent_replay`. Resources include `ruv://bot-generator-bot/policy` and `ruv://bot-generator-bot/prompt-guide`; prompt discovery exposes the three starters.
+For reproducible installation from a reviewed checkout, discover and install its local copy instead:
 
-Tests over MCP require an operator to set `BOT_ALLOW_VALIDATION=1`. Test subprocesses use one slot, a stripped environment, a 30 second deadline and a 64 KiB output bound. CLI `test` is an explicit local opt-in. MCP callers cannot choose executable commands, files, destinations or endpoints. Compilation has no provider cost; model quality and deployment reliability are not implied by compiler success.
+```sh
+npx -y skills@1.5.25 add ./skills --list
+npx -y skills@1.5.25 add ./skills --skill bot-generator --agent claude-code codex --copy --yes
+```
+
+The commands use project scope. Claude Code receives `.claude/skills/bot-generator`; Codex receives `.agents/skills/bot-generator`. Invoke `/bot-generator` in Claude Code or `$bot-generator` in Codex. Pinning the installer does not pin the GitHub repository revision; retain the reviewed checkout commit when reproducibility matters.
+
+Try this request:
+
+> Use bot-generator to create a support agent from supplied product instructions. Discover the support template, add a missing evidence demonstration, compile and verify it, validate an output, and export a runnable agent. Show the manifest digest and checks. Do not call a paid model.
+
+Installing a skill provides guidance. Install the repository dependencies and register its MCP server separately to make its tools callable. See the [host guide](docs/HOSTS.md) for installation qualification and scope details.
+
+## Connect the MCP server
+
+After completing the quick start, register the reviewed checkout using an absolute path. The server uses local stdio and waits for protocol messages; it is not a web server or a published npm launcher.
+
+### Claude Code
+
+```sh
+claude mcp add --transport stdio --scope project bot-generator -- node /absolute/path/Bot-Generator-Bot/src/cli.mjs mcp
+claude mcp get bot-generator
+```
+
+### Codex
+
+```sh
+codex mcp add bot-generator -- node /absolute/path/Bot-Generator-Bot/src/cli.mjs mcp
+codex mcp list
+```
+
+Alternatively, use the host's supported configuration scope and trust settings with:
+
+```toml
+[mcp_servers.bot-generator]
+command = "node"
+args = ["/absolute/path/Bot-Generator-Bot/src/cli.mjs", "mcp"]
+```
+
+These registration commands follow the official host documentation; automated qualification exercised the MCP protocol through the SDK, not the Claude or Codex interface. See [Claude MCP setup](https://code.claude.com/docs/en/mcp) and [Codex MCP setup](https://developers.openai.com/codex/mcp/).
+
+### Tools, prompts and resources
+
+All tool arguments are JSON objects with exactly the documented fields. Send `{}` to tools with no arguments.
+
+| MCP tool | Arguments | Result |
+| --- | --- | --- |
+| `status` | `{}` | Runtime policy and limits |
+| `templates` | `{}` | Available starter names |
+| `template` | `{"name":"support"}` | Editable specification; also accepts `research` or `code` |
+| `compile` | `{"spec": ...}` | Deterministic versioned manifest |
+| `verify` | `{"manifest": ...}` | Manifest consistency check |
+| `validate` | `{"schema": ..., "value": ...}` | Strict typed output validation |
+| `agent_plan` | `{"manifest": ...}` | Standalone project file map and hashes |
+| `agent_run` | `{"manifest": ..., "input":"task"}` | Bounded model run requiring operator configuration |
+| `agent_replay` | `{"manifest": ..., "id":"session UUID"}` | Local session integrity replay |
+| `test` | `{}` | Bounded repository validation; operator opt-in required |
+| `benchmark` | `{}` | Local deterministic compiler timing |
+
+Read `ruv://bot-generator-bot/policy` for execution boundaries and `ruv://bot-generator-bot/prompt-guide` for schemas, workflow and version guidance. MCP prompt discovery exposes `support`, `research` and `code`; each returns a `{spec, manifest}` starter artifact to inspect and compile.
+
+A first connection check is `templates` → `template` → `compile` → `verify`. This flow needs no provider credentials. The [host guide](docs/HOSTS.md) includes an example request and troubleshooting context.
+
+### Operator configuration
+
+Set these in the server process environment, never in tool arguments or committed configuration:
+
+| Variable | Purpose |
+| --- | --- |
+| `BOT_ALLOW_VALIDATION=1` | Allow the MCP `test` operation |
+| `BOT_AGENT_STORAGE` | Absolute private directory for agent state |
+| `BOT_AGENT_ALLOW_LIVE=1` | Explicitly enable paid provider execution |
+| `BOT_AGENT_API_KEY` | Dedicated provider credential supplied through a secret manager |
+| `BOT_AGENT_MODEL` | Operator selected model |
+| `BOT_ALLOWED_TOOLS=search` | Permit local memory search when the manifest also requests it |
+| `BOT_AGENT_RUFLO=1` | Enable optional RuFlo keyword routing |
+
+Test subprocesses use one slot, a stripped environment, a 30 second deadline and a 64 KiB output bound. CLI `test` is an explicit local opt-in. MCP callers cannot choose executable commands, storage paths, destinations or endpoints. Installing the skill or connecting MCP does not enable paid execution.
+
+### ChatGPT
+
+ChatGPT custom apps require a reachable remote MCP service with supported HTTP transport and authentication. This repository currently supplies local stdio MCP; it does not deploy a ChatGPT endpoint. A remote integration needs an authenticated gateway with user isolation and request limits. Installing through `npx skills` does not register a ChatGPT app. The separate federation endpoint `https://x.ruv.io/mcp` is not Bot Generator Bot's server. See [ChatGPT integration requirements](docs/HOSTS.md#chatgpt-remote-integration-boundary).
 
 ## Prompt contracts and examples
 
