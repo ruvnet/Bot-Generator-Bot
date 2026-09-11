@@ -12,7 +12,7 @@ The original 2023 project was a prompt collection. This preview adds working sof
 | Deterministic compiler | Same normalized specification produces identical manifest and SHA256 |
 | Typed output validation | Rejects missing/extra fields, invalid types and unsafe numbers |
 | Operator tool policy | Requests must be in a fixed catalog and the operator allowlist; requests never grant authority |
-| CLI and MCP | Eleven tools, three prompt templates, one policy resource |
+| CLI and MCP | Eleven tools, three prompt templates, two resources |
 | Runnable agents | Bounded model and tool loop, typed final output, standalone project export |
 | RuVector memory | Private manifest-scoped lexical retrieval with native vector search |
 | RuFlo routing | Optional pinned upstream keyword routing hook |
@@ -33,6 +33,8 @@ npm test
 npm run benchmark
 ```
 
+See [Claude, Codex and ChatGPT setup](docs/HOSTS.md) for installable skills and MCP configuration, and [prompt design](docs/PROMPTING.md) for the evaluated contract.
+
 The compiler input is `{ "spec": { "name", "purpose", "context", "examples", "output", "tools" } }`; use the complete JSON example in [fixtures/support-request.json](fixtures/support-request.json). Output fields support `string`, `number`, `integer` and `boolean`. All fields are required and extra fields reject. The input cap is 32 KiB, strings 8 KiB, nesting 12 levels, and output schemas 16 fields.
 
 Set `BOT_ALLOWED_TOOLS=search` locally to permit a specification to request the catalog's search tool. The agent runtime separately enforces the operator grant. Its supported tool is local memory `search`; other catalog tools are reserved and fail closed in this runtime. No tokens or provider credentials belong in specifications. `verify` checks manifest consistency, not authorship: an attacker can create a different consistent manifest.
@@ -43,9 +45,23 @@ Set `BOT_ALLOWED_TOOLS=search` locally to permit a specification to request the 
 node src/cli.mjs mcp
 ```
 
-Configure your host with command `node` and the absolute path to `src/cli.mjs`, followed by `mcp`. MCP tools are `status`, `templates`, `template`, `compile`, `validate`, `verify`, `test`, `benchmark`, `agent_plan`, `agent_run`, and `agent_replay`. Resources include `ruv://bot-generator-bot/policy`; prompt discovery exposes the three starters.
+Configure your host with command `node` and the absolute path to `src/cli.mjs`, followed by `mcp`. MCP tools are `status`, `templates`, `template`, `compile`, `validate`, `verify`, `test`, `benchmark`, `agent_plan`, `agent_run`, and `agent_replay`. Resources include `ruv://bot-generator-bot/policy` and `ruv://bot-generator-bot/prompt-guide`; prompt discovery exposes the three starters.
 
 Tests over MCP require an operator to set `BOT_ALLOW_VALIDATION=1`. Test subprocesses use one slot, a stripped environment, a 30 second deadline and a 64 KiB output bound. CLI `test` is an explicit local opt-in. MCP callers cannot choose executable commands, files, destinations or endpoints. Compilation has no provider cost; model quality and deployment reliability are not implied by compiler success.
+
+## Prompt contracts and examples
+
+New manifests use version 3. Existing version 2 manifests remain verifiable and runnable. Recompiling creates a new digest and private memory scope; it does not move old memory automatically.
+
+Examples can be task hint strings or validated demonstrations:
+
+```json
+{"input":"No installation guide was supplied.","output":{"answer":"Please supply the installation guide.","needsReview":true}}
+```
+
+Demonstration outputs must match the specification's output schema. Runtime adapters receive a shared response contract and examples wrapped consistently as `{"output": ...}`. The host validates every result and rejects incomplete provider responses. MCP prompt discovery returns an inspectable `{spec, manifest}` starter artifact, not privileged system instructions.
+
+The three starter prompts now contain one validated demonstration each. Their serialized size grows from roughly 540 bytes to 1.2 to 1.4 KiB. This trades a small context increase for explicit examples and consistent contracts; model accuracy gains still need paired evaluation. See [measured prompt sizes](docs/prompt-comparison.json).
 
 ## Run or export an agent
 

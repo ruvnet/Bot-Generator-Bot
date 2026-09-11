@@ -5,6 +5,7 @@ import {openStore,replayStore} from './storage.mjs';
 import {openMemory} from './memory.mjs';
 import {createOpenAIModel} from './provider.mjs';
 import {routeWithRuflo} from './ruflo.mjs';
+import {agentMessages} from './prompt.mjs';
 export {planAgent} from './plan.mjs';
 export {LIMITS};
 const supportedTools=Object.freeze(['search']);let active=false;
@@ -21,7 +22,7 @@ export async function runAgent(request,config={}){
   store=await openStore(config.storageRoot,request.manifest.sha256,limits);signal.throwIfAborted();const memory=await openMemory(store,limits);signal.throwIfAborted();
   await store.append('start',{manifest:request.manifest.sha256,inputHash:digest(request.input),limits,kernel:{version:kernel.kernelInfo().version,backend:kernel.backend}});
   let route={enabled:false};if(config.ruflo===true){route=await routeWithRuflo(request.manifest.spec.purpose,{cwd:store.scope,signal});await store.append('route',route);}
-  const messages=[...request.manifest.messages,{role:'system',content:boundedJSON({allowedTools:requested,searchArguments:{query:'string up to 2048 bytes'},limits,route})},{role:'user',content:boundedJSON({runtimeInput:request.input})}];let calls=0;
+  const messages=agentMessages(request.manifest,request.input,limits,requested,route);let calls=0;
   for(let turn=1;turn<=limits.maxTurns;turn++){
    boundedJSON(messages,limits.maxMessagesBytes);const reply=await abortable(()=>model(structuredClone(messages),{signal,limits,tools:[...requested]}),signal);canonical(reply);boundedJSON(reply,limits.maxResponseBytes);
    if(!reply||Array.isArray(reply)||typeof reply!=='object')throw Error('Agent response schema');

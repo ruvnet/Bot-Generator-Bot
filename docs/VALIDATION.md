@@ -19,3 +19,7 @@ The bounded CLI validation operation runs compiler, MCP and all agent tests with
 The memory benchmark compares 64 deterministic lexical fixtures against an exhaustive cosine reference, records recall at three and measures retrieved context bytes against sending the entire ledger. This is retrieval and context-budget evidence, not a learned embedding evaluation or state-of-the-art claim. See `docs/agent-benchmark.json` for the final measured run.
 
 Final local native memory fixture: recall@3 and exhaustive cosine top1 agreement both1.0 over64queries. Mean retrieved context1510bytes versus25837bytes for the complete ledger, a94.15% reduction; p95 retrieval1.036ms. These figures describe deterministic lexical fixtures only.
+
+## Prompt and skills upgrade
+
+27 tests pass after the prompt contract upgrade. Added exact v2 manifest compatibility, validated demonstration output rejection, context role separation, shared runtime envelope checks, provider truncation/refusal rejection and actual MCP starter roundtrip/resource discovery. Original runtime memory, budgets and tool denial tests remain mandatory. New prompt sizes are recorded in prompt-comparison.json; no live model improvement is inferred.

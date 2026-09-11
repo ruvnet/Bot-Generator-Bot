@@ -4,7 +4,7 @@ export async function readBoundedJSON(response,signal,max=32768){if(!response.ok
 export function createOpenAIModel(config,limits){
  if(config.allowLive!==true||typeof config.apiKey!=='string'||config.apiKey.length<16||typeof config.modelName!=='string'||!config.modelName.trim()||config.modelName.length>100)throw Error('Explicit live provider configuration required');
  return async(messages,{signal})=>{
- const body={model:config.modelName,messages:[{role:'system',content:'Respond with exactly one JSON object: {"output": <final output object>} OR {"toolCalls":[{"name":"search","arguments":{"query":"..."}}]}. Available tool names and policies are supplied in the following system message. Never invent tool results.'},...messages],response_format:{type:'json_object'},max_completion_tokens:limits.maxTokensPerTurn};
- const response=await fetch(OPENAI_ENDPOINT,{method:'POST',redirect:'error',headers:{'content-type':'application/json',authorization:'Bearer '+config.apiKey},body:boundedJSON(body,65536),signal});const result=await readBoundedJSON(response,signal,limits.maxResponseBytes);const content=result.choices?.[0]?.message?.content;if(typeof content!=='string')throw Error('Provider response schema');return JSON.parse(content);
+ const body={model:config.modelName,messages,response_format:{type:'json_object'},max_completion_tokens:limits.maxTokensPerTurn};
+ const response=await fetch(OPENAI_ENDPOINT,{method:'POST',redirect:'error',headers:{'content-type':'application/json',authorization:'Bearer '+config.apiKey},body:boundedJSON(body,65536),signal});const result=await readBoundedJSON(response,signal,limits.maxResponseBytes);const choice=result.choices?.[0];if(choice?.finish_reason!=='stop'||choice.message?.refusal)throw Error('Provider did not complete');const content=choice?.message?.content;if(typeof content!=='string')throw Error('Provider response schema');return JSON.parse(content);
  };
 }
