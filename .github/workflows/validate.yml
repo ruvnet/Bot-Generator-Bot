@@ -18,7 +18,7 @@ jobs:
       - run: npm audit --audit-level=moderate
       - run: node src/cli.mjs benchmark > benchmark.json
       - run: node src/agent/benchmark.mjs > agent-benchmark.json
-      - run: tar -czf bot-generator.tgz src test fixtures .npmrc package.json package-lock.json README.md docs
+      - run: tar -czf bot-generator.tgz src test fixtures skills .npmrc package.json package-lock.json README.md docs
       - uses: actions/upload-artifact@v4
         with:
           name: bot-generator-validated

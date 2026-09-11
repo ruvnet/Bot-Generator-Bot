@@ -1,0 +1,32 @@
+{
+  "scope": "Structural prompt comparison only; bytes are not tokenizer counts or model-quality measurements",
+  "cases": [
+    {
+      "name": "support",
+      "beforeVersion": 2,
+      "afterVersion": 3,
+      "beforePromptBytes": 541,
+      "afterPromptBytes": 1226,
+      "beforeValidatedDemonstrations": 0,
+      "afterValidatedDemonstrations": 1
+    },
+    {
+      "name": "research",
+      "beforeVersion": 2,
+      "afterVersion": 3,
+      "beforePromptBytes": 556,
+      "afterPromptBytes": 1239,
+      "beforeValidatedDemonstrations": 0,
+      "afterValidatedDemonstrations": 1
+    },
+    {
+      "name": "code",
+      "beforeVersion": 2,
+      "afterVersion": 3,
+      "beforePromptBytes": 540,
+      "afterPromptBytes": 1366,
+      "beforeValidatedDemonstrations": 0,
+      "afterValidatedDemonstrations": 1
+    }
+  ]
+}
