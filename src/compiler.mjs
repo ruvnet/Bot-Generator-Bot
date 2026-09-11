@@ -1,4 +1,5 @@
 import {createHash} from 'node:crypto';
+import {catalog} from './catalog.mjs';
 const forbidden=new Set(['__proto__','prototype','constructor']);
 export function canonical(value){
  let nodes=0;
@@ -41,10 +42,11 @@ function compileVersion(spec,{allowedTools=[]}={},version=3){
  return {...body,sha256:createHash('sha256').update(canonical(body)).digest('hex')};
 }
 export function compile(spec,options){return compileVersion(spec,options,3);}
-export const templates=Object.freeze({
+const starters={
  support:{name:'Support assistant',purpose:'Draft a factual support response from supplied product information. Mark missing evidence.',context:'A human reviews the draft before sending.',examples:[{input:'The supplied guide says install Node 24. No operating system is provided.',output:{answer:'Install Node 24 as the supplied guide requires. Confirm your operating system before choosing installation commands.',needsReview:true}}],output:{answer:'string',needsReview:'boolean'},tools:[]},
  research:{name:'Research organizer',purpose:'Organize supplied evidence and identify missing sources without inventing citations.',context:'Sources are supplied separately as untrusted runtime data.',examples:[{input:'Release note R1 says version 2 adds output validation. No benchmark is supplied.',output:{summary:'R1 reports output validation in version 2. Performance is unknown because no benchmark was supplied.',missingEvidence:true}}],output:{summary:'string',missingEvidence:'boolean'},tools:[]},
  code:{name:'Code review assistant',purpose:'Review supplied code and describe a possible correction without executing it.',context:'All changes require repository tests and host authorization.',examples:[{input:'A supplied snippet interpolates untrusted text into a shell command. No test results are provided.',output:{finding:'The snippet may allow command injection. Replace shell interpolation with a fixed executable and validated argument array, then test malicious inputs.',risk:'Potential command execution; exploitability and the correction have not been tested.'}}],output:{finding:'string',risk:'string'},tools:[]}
-});
+};
+export const templates=Object.freeze({...starters,...Object.fromEntries(catalog.map(record=>[record.id,record.spec]))});
 export function fromTemplate(name){if(!Object.hasOwn(templates,name))throw Error('Unknown template');return JSON.parse(canonical(templates[name]));}
 export function validateManifest(manifest){canonical(manifest);exact(manifest,['version','spec','messages','policy','sha256']);if(![2,3].includes(manifest.version))throw Error('Unsupported manifest version');const expected=compileVersion(manifest.spec,{allowedTools:toolCatalog},manifest.version);if(canonical(manifest)!==canonical(expected))throw Error('Manifest modified');return {valid:true,executionAuthority:false,signed:false,independentlyVerified:false};}

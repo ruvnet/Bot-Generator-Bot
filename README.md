@@ -8,11 +8,11 @@ The original 2023 project was a prompt collection. This preview adds working sof
 
 | Capability | What it does |
 | --- | --- |
-| Three starter templates | Support responses, research organization, code review |
+| Complete prompt catalog | All 39 original prompts migrated, plus support, research and code starters |
 | Deterministic compiler | Same normalized specification produces identical manifest and SHA256 |
 | Typed output validation | Rejects missing/extra fields, invalid types and unsafe numbers |
 | Operator tool policy | Requests must be in a fixed catalog and the operator allowlist; requests never grant authority |
-| CLI and MCP | Eleven tools, three prompt templates, two resources |
+| CLI and MCP | 50 tools, 42 prompt templates and three resources |
 | Runnable agents | Bounded model and tool loop, typed final output, standalone project export |
 | RuVector memory | Private manifest-scoped lexical retrieval with native vector search |
 | RuFlo routing | Optional pinned upstream keyword routing hook |
@@ -63,6 +63,27 @@ Try this request:
 
 Installing a skill provides guidance. Install the repository dependencies and register its MCP server separately to make its tools callable. See the [host guide](docs/HOSTS.md) for installation qualification and scope details.
 
+## Skills and tools for every original prompt
+
+All **39 original prompts** now have a curated typed agent template, an installable skill and a dedicated MCP builder. The [complete catalog](docs/CATALOG.md) maps every original source to its skill and tool. Original text remains unchanged for provenance; modernized contracts define the supported behavior.
+
+Discover the skills and install a selected one:
+
+```sh
+npx -y skills@1.5.25 add ruvnet/Bot-Generator-Bot --list
+npx -y skills@1.5.25 add ruvnet/Bot-Generator-Bot --skill bgb-business-plan-bot --agent claude-code codex --copy --yes
+```
+
+Each `build_<template_id>` tool takes `{}` and returns a validated agent manifest without calling a model. For example, call `build_business_plan_bot` over MCP or run:
+
+```sh
+node src/cli.mjs build_business_plan_bot > business-agent.json
+```
+
+Use `template` with the catalog ID to customize its specification before compiling. Use `agent_plan` to package the returned manifest, or `agent_run` for a bounded model task with operator configuration. Each domain skill includes its own workflow, output schema, demonstration and original source digest. The catalog resource is `ruv://bot-generator-bot/catalog`.
+
+The migrated skills create drafts, educational assistance and simulations within their stated scope. They do not claim to deploy APIs, book meetings, send messages, provide licensed professional services or run generated code. Those effects require separately available and authorized host integrations.
+
 ## Connect the MCP server
 
 After completing the quick start, register the reviewed checkout using an absolute path. The server uses local stdio and waits for protocol messages; it is not a web server or a published npm launcher.
@@ -93,6 +114,8 @@ These registration commands follow the official host documentation; automated qu
 
 ### Tools, prompts and resources
 
+The 39 dedicated catalog builders complement the 11 shared tools below. See the [catalog](docs/CATALOG.md) for every builder name.
+
 All tool arguments are JSON objects with exactly the documented fields. Send `{}` to tools with no arguments.
 
 | MCP tool | Arguments | Result |
@@ -109,7 +132,7 @@ All tool arguments are JSON objects with exactly the documented fields. Send `{}
 | `test` | `{}` | Bounded repository validation; operator opt-in required |
 | `benchmark` | `{}` | Local deterministic compiler timing |
 
-Read `ruv://bot-generator-bot/policy` for execution boundaries and `ruv://bot-generator-bot/prompt-guide` for schemas, workflow and version guidance. MCP prompt discovery exposes `support`, `research` and `code`; each returns a `{spec, manifest}` starter artifact to inspect and compile.
+Read `ruv://bot-generator-bot/policy` for execution boundaries and `ruv://bot-generator-bot/prompt-guide` for schemas, workflow and version guidance. MCP prompt discovery exposes all 39 catalog IDs plus `support`, `research` and `code`; each returns a `{spec, manifest}` starter artifact to inspect and compile.
 
 A first connection check is `templates` → `template` → `compile` → `verify`. This flow needs no provider credentials. The [host guide](docs/HOSTS.md) includes an example request and troubleshooting context.
 

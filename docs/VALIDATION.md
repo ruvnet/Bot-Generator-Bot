@@ -23,3 +23,9 @@ Final local native memory fixture: recall@3 and exhaustive cosine top1 agreement
 ## Prompt and skills upgrade
 
 27 tests pass after the prompt contract upgrade. Added exact v2 manifest compatibility, validated demonstration output rejection, context role separation, shared runtime envelope checks, provider truncation/refusal rejection and actual MCP starter roundtrip/resource discovery. Original runtime memory, budgets and tool denial tests remain mandatory. New prompt sizes are recorded in prompt-comparison.json; no live model improvement is inferred.
+
+## Complete catalog qualification
+
+All39originalsources map exactly to39typed templates,39dedicatedMCPbuilders and39generated skills, alongside the existing general skill and three starters. Tests verify source hashes, unique IDs, typed examples and invalid output rejection. Every builder and prompt is called through the actual SDK, and every manifest runs through the actual bounded kernel/native-memory runtime with a controlled typed fixture. These are contract tests, not clinical/legal suitability or live model quality evaluations. Domain workflow guidance is embedded in each exported task instruction as well as its skill.
+
+The pinned Skills CLI installed all40skills into isolated Claude Code and Codex project directories; copied files matched source. CI checks generation drift. The catalog and compiler dependencies are included in standalone export. All30domain tests pass, including legacy compatibility and prior provider/security cases.

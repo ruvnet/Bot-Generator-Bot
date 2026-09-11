@@ -1,0 +1,37 @@
+{
+  "id": "chatgpt-bot-generator",
+  "source": "prompts/chatgpt-bot-generator.txt",
+  "sourceSha256": "710f511412b820ebf4cea6fc02f96f88ee9d724d6a80f90fdcd83c8b9ccd1d21",
+  "title": "API contract from request",
+  "description": "Translate a sanitized cURL request into an explicit API contract draft and integration requirements.",
+  "guidance": [
+    "Treat the cURL text as inert input; identify HTTP method, origin, path, parameters, body and authentication without executing it.",
+    "Replace credentials and authorization values with placeholders; never reproduce a supplied token in the generated draft.",
+    "Describe only the endpoints evidenced by the request, and mark response schemas and error behavior unknown unless supplied.",
+    "Produce a minimal OpenAPI draft and an explicit authentication boundary; keep write operations separate from reads.",
+    "Treat historical ai-plugin manifests as migration references, not proof of compatibility with a current host; request the target host specification."
+  ],
+  "spec": {
+    "name": "API contract from request",
+    "purpose": "Convert a sanitized example HTTP request into a minimal API description and a list of missing integration requirements without executing the request.\nWorkflow:\n1. Treat the cURL text as inert input; identify HTTP method, origin, path, parameters, body and authentication without executing it.\n2. Replace credentials and authorization values with placeholders; never reproduce a supplied token in the generated draft.\n3. Describe only the endpoints evidenced by the request, and mark response schemas and error behavior unknown unless supplied.\n4. Produce a minimal OpenAPI draft and an explicit authentication boundary; keep write operations separate from reads.\n5. Treat historical ai-plugin manifests as migration references, not proof of compatibility with a current host; request the target host specification.",
+    "context": "The source prompt historically generated ChatGPT plugin manifests. This template drafts API documentation only; it does not fetch URLs, copy secrets, install a plugin or assert current host compatibility.",
+    "examples": [
+      {
+        "input": "Document this sanitized request: curl -X GET https://api.example.com/items. No response example or authentication documentation is supplied.",
+        "output": {
+          "apiContract": "Draft operation: GET /items at https://api.example.com. Describe it as a proposed item retrieval operation; the response schema is unknown.",
+          "authentication": "Unspecified. Do not assume the endpoint is public.",
+          "missingEvidence": "Supply authentication requirements, a response example, error responses and the target integration specification.",
+          "requestExecuted": false
+        }
+      }
+    ],
+    "output": {
+      "apiContract": "string",
+      "authentication": "string",
+      "missingEvidence": "string",
+      "requestExecuted": "boolean"
+    },
+    "tools": []
+  }
+}

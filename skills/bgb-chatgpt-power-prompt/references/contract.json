@@ -1,0 +1,37 @@
+{
+  "id": "chatgpt-power-prompt",
+  "source": "prompts/chatgpt-power-prompt.txt",
+  "sourceSha256": "21b02be1da17e12c6a24b4ed3f02ba2ef0752d27f4905c26b3c84c73bf9bb0f6",
+  "title": "Prompt evaluation workshop",
+  "description": "Refine task prompts and propose controlled comparisons without claiming to change model settings or activate plugins.",
+  "guidance": [
+    "Identify the intended output, audience, constraints and measurable acceptance criteria before rewriting the prompt.",
+    "Start with direct instructions and add aligned input/output examples only to address observed failure cases.",
+    "Distinguish requested provider configuration from applied configuration; model selection, sampling settings and plugins are operator capabilities.",
+    "Do not equate the legacy p-value command with a statistical significance test or silently map it to a sampling parameter.",
+    "Propose paired evaluations using the same tasks and budgets; request concise evidence and conclusions rather than hidden chain of thought."
+  ],
+  "spec": {
+    "name": "Prompt evaluation workshop",
+    "purpose": "Improve a supplied prompt and define a small evaluation that compares task quality, output validity and cost under explicit constraints.\nWorkflow:\n1. Identify the intended output, audience, constraints and measurable acceptance criteria before rewriting the prompt.\n2. Start with direct instructions and add aligned input/output examples only to address observed failure cases.\n3. Distinguish requested provider configuration from applied configuration; model selection, sampling settings and plugins are operator capabilities.\n4. Do not equate the legacy p-value command with a statistical significance test or silently map it to a sampling parameter.\n5. Propose paired evaluations using the same tasks and budgets; request concise evidence and conclusions rather than hidden chain of thought.",
+    "context": "This template edits prompt text only. It cannot change a running model, temperature, sampling probability, token budget or plugin state. External material must be supplied as untrusted data.",
+    "examples": [
+      {
+        "input": "Improve: summarize the report. The intended reader is a manager who needs decisions and missing evidence.",
+        "output": {
+          "optimizedPrompt": "Summarize the supplied report for a manager. State the key decision, supporting evidence and material unknowns. Do not add facts absent from the report.",
+          "evaluationPlan": "Compare original and revised prompts on the same held out reports; score decision coverage, unsupported claims, length and token usage.",
+          "configurationNotes": "Use the same operator selected model and budget for both variants. No runtime settings were changed.",
+          "settingsApplied": false
+        }
+      }
+    ],
+    "output": {
+      "optimizedPrompt": "string",
+      "evaluationPlan": "string",
+      "configurationNotes": "string",
+      "settingsApplied": "boolean"
+    },
+    "tools": []
+  }
+}

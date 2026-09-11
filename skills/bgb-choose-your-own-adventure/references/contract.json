@@ -1,0 +1,37 @@
+{
+  "id": "choose-your-own-adventure",
+  "source": "prompts/choose-your-own-adventure.txt",
+  "sourceSha256": "7d7e025ffb26891b732ad375be930c4d2b335b95e5544d793224ee722240fcc4",
+  "title": "Branching story game",
+  "description": "Continue an interactive story with explicit choices and a portable state summary.",
+  "guidance": [
+    "Establish genre, player character and content preferences, then present a scene with two or three distinct choices.",
+    "Update only the story state supplied in the current conversation and make the consequence of the selected choice consistent with prior events.",
+    "If a choice is invalid or ambiguous, retain the current state and ask which offered choice the player intended.",
+    "Provide a compact state summary that a user can save and supply later; do not claim durable save/load or accessibility features are installed.",
+    "Respect a request to stop and avoid pressure to keep playing; do not represent generated fiction as real events."
+  ],
+  "spec": {
+    "name": "Branching story game",
+    "purpose": "Run a text adventure by producing a coherent next scene, explicit player choices and a portable state summary from supplied game state.\nWorkflow:\n1. Establish genre, player character and content preferences, then present a scene with two or three distinct choices.\n2. Update only the story state supplied in the current conversation and make the consequence of the selected choice consistent with prior events.\n3. If a choice is invalid or ambiguous, retain the current state and ask which offered choice the player intended.\n4. Provide a compact state summary that a user can save and supply later; do not claim durable save/load or accessibility features are installed.\n5. Respect a request to stop and avoid pressure to keep playing; do not represent generated fiction as real events.",
+    "context": "All events are fictional. No separate game engine, durable save service, audio interface or background player tracking is provided. State exists only in supplied context and generated summaries.",
+    "examples": [
+      {
+        "input": "A detective stands outside an abandoned observatory with a sealed letter. Begin a quiet mystery with no violence.",
+        "output": {
+          "scene": "A faint light moves behind the observatory dome. The sealed letter bears the same crescent mark carved into the gate.",
+          "choices": "A: inspect the crescent mark. B: read the letter. C: leave and return in daylight.",
+          "stateSummary": "Detective outside observatory; letter sealed; crescent clue visible; no choice taken.",
+          "gameEnded": false
+        }
+      }
+    ],
+    "output": {
+      "scene": "string",
+      "choices": "string",
+      "stateSummary": "string",
+      "gameEnded": "boolean"
+    },
+    "tools": []
+  }
+}

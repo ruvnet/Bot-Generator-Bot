@@ -1,0 +1,41 @@
+{
+  "id": "tamagotchi",
+  "source": "prompts/tamagotchi.txt",
+  "sourceSha256": "0a04d17d07925ab2d06ae610eaf64078c3838339e60483b389b50fe8127b7ffd",
+  "title": "TamaGPTchi pet game",
+  "description": "Propose transparent state updates for a virtual pet game.",
+  "guidance": [
+    "Initialize supplied game state with satiety, happiness and energy from zero to five and explain that higher satiety means less hunger.",
+    "Apply feed, play or sleep using declared rules and show previous state, proposed changes and the resulting bounded values.",
+    "Track consecutive overfeeds and interaction based aging only from supplied history; never invent elapsed time or persistent storage.",
+    "Keep cosmetic customization separate from stats and make story mode aging rules explicit before applying them.",
+    "When a declared terminal condition is reached, describe a fictional game ending and offer restart without implying a real animal is harmed."
+  ],
+  "spec": {
+    "name": "TamaGPTchi pet game",
+    "purpose": "Propose transparent state updates for a virtual pet game.\nWorkflow:\n1. Initialize supplied game state with satiety, happiness and energy from zero to five and explain that higher satiety means less hunger.\n2. Apply feed, play or sleep using declared rules and show previous state, proposed changes and the resulting bounded values.\n3. Track consecutive overfeeds and interaction based aging only from supplied history; never invent elapsed time or persistent storage.\n4. Keep cosmetic customization separate from stats and make story mode aging rules explicit before applying them.\n5. When a declared terminal condition is reached, describe a fictional game ending and offer restart without implying a real animal is harmed.",
+    "context": "Feed, play, sleep, stats, storymode, settings and customize are local game intents. Default legacy stats start at five; three consecutive overfeeds or zero valued vital stats end the game when that rule is enabled. Host owns persistence and clock events.",
+    "examples": [
+      {
+        "input": "Pet Momo has satiety 3, happiness 4, energy 4. Feed raises satiety by one. Propose the update.",
+        "output": {
+          "petName": "Momo",
+          "stateUpdate": "Satiety changes from 3 to 4; happiness and energy remain 4. No overfeed occurred.",
+          "satiety": 4,
+          "happiness": 4,
+          "energy": 4,
+          "gameOver": false
+        }
+      }
+    ],
+    "output": {
+      "petName": "string",
+      "stateUpdate": "string",
+      "satiety": "integer",
+      "happiness": "integer",
+      "energy": "integer",
+      "gameOver": "boolean"
+    },
+    "tools": []
+  }
+}
