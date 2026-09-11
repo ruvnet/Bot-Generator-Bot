@@ -5,6 +5,7 @@ const dependencies=Object.freeze({'@metaharness/kernel':'0.1.3','@ruvector/core'
 export async function planAgent(manifest){
  validateManifest(manifest);const files={};const base=new URL('./',import.meta.url);
  for(const name of (await readdir(base)).filter(n=>/^[a-z-]+\.mjs$/.test(n)).sort())files['src/agent/'+name]=await readFile(new URL(name,base),'utf8');
+ for(const name of ['group-a.json','group-b.json','group-c.json'])files['catalog/'+name]=await readFile(new URL('../../catalog/'+name,base),'utf8');files['src/catalog.mjs']=await readFile(new URL('../catalog.mjs',base),'utf8');
  files['src/compiler.mjs']=await readFile(new URL('../compiler.mjs',base),'utf8');files['agent.json']=JSON.stringify(manifest,null,2)+'\n';
  files['package.json']=JSON.stringify({name:'generated-metaharness-agent',version:'1.0.0',private:true,type:'module',engines:{node:'>=24'},scripts:{start:'node src/agent/runner.mjs run',mcp:'node src/agent/runner.mjs mcp',status:'node src/agent/runner.mjs status'},dependencies,overrides:{qs:'6.16.0'}},null,2)+'\n';
  const lock=JSON.parse(await readFile(new URL('../../package-lock.json',base),'utf8'));lock.name='generated-metaharness-agent';lock.version='1.0.0';lock.packages['']={name:lock.name,version:lock.version,dependencies,engines:{node:'>=24'}};files['package-lock.json']=JSON.stringify(lock,null,2)+'\n';

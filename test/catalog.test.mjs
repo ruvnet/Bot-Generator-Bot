@@ -1,0 +1,19 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {readdir,readFile} from 'node:fs/promises';import {createHash} from 'node:crypto';
+import {catalog,catalogTools} from '../src/catalog.mjs';import {compile,fromTemplate,validateManifest,validateOutput} from '../src/compiler.mjs';
+import {Client} from '@modelcontextprotocol/client';import {StdioClientTransport} from '@modelcontextprotocol/client/stdio';
+async function sources(dir){const out=[];for(const e of await readdir(dir,{withFileTypes:true})){const p=dir+'/'+e.name;if(e.isDirectory())out.push(...await sources(p));else if(p.endsWith('.txt'))out.push(p);}return out;}
+test('every original prompt has one unchanged source, unique skill, builder and valid domain contract',async()=>{
+ assert.equal(catalog.length,39);assert.deepEqual(catalog.map(r=>r.source).sort(),(await sources('prompts')).sort());assert.equal(new Set(catalog.map(r=>r.id)).size,39);assert.equal(Object.keys(catalogTools).length,39);
+ for(const r of catalog){assert.match(r.id,/^[a-z0-9]+(?:-[a-z0-9]+)*$/);assert.ok(r.id.length<=45);assert.equal(createHash('sha256').update(await readFile(r.source)).digest('hex'),r.sourceSha256);assert.deepEqual(r.spec.tools,[]);const m=compile(fromTemplate(r.id));assert.equal(validateManifest(m).valid,true);const task=JSON.parse(m.messages[0].content.split('\n').at(-1)).task;for(const guidance of r.guidance)assert.ok(task.includes(guidance),'Domain guidance must reach exported instructions: '+r.id);assert.ok(r.spec.examples.length>0);for(const e of r.spec.examples){assert.equal(validateOutput(r.spec.output,e.output).valid,true);assert.throws(()=>validateOutput(r.spec.output,{...e.output,unexpectedField:true}));}const contract=JSON.parse(await readFile('skills/bgb-'+r.id+'/references/contract.json','utf8'));assert.deepEqual(contract,r);}
+});
+test('every catalog MCP builder and prompt is callable and maps to its own validated specification',async()=>{
+ const c=new Client({name:'catalog-e2e',version:'1'},{capabilities:{}});try{await c.connect(new StdioClientTransport({command:process.execPath,args:['src/cli.mjs','mcp'],env:{PATH:process.env.PATH},stderr:'pipe'}));const tools=(await c.listTools()).tools;assert.equal(tools.length,50);assert.equal((await c.listPrompts()).prompts.length,42);const resource=JSON.parse((await c.readResource({uri:'ruv://bot-generator-bot/catalog'})).contents[0].text);assert.equal(resource.length,39);
+ for(const [name,r] of Object.entries(catalogTools)){assert.ok(tools.some(t=>t.name===name));const result=await c.callTool({name,arguments:{}});assert.notEqual(result.isError,true);const manifest=JSON.parse(result.content[0].text);assert.deepEqual(manifest,compile(r.spec));const prompt=JSON.parse((await c.getPrompt({name:r.id})).messages[0].content.text);assert.deepEqual(prompt.manifest,manifest);assert.equal((await c.callTool({name,arguments:{execute:true}})).isError,true);}
+ }finally{await c.close();}
+});
+test('all39 catalog agents execute through the actual bounded runtime with typed fixture outputs',async()=>{
+ const {mkdtemp,rm}=await import('node:fs/promises');const {tmpdir}=await import('node:os');const {join}=await import('node:path');const {runAgent}=await import('../src/agent/index.mjs');const storageRoot=await mkdtemp(join(tmpdir(),'catalog-runtime-'));
+ try{for(const r of catalog){const example=r.spec.examples[0];const manifest=compile(r.spec);const result=await runAgent({manifest,input:example.input},{storageRoot,model:async messages=>{assert.deepEqual(JSON.parse(messages.at(-2).content).runtimeContract.final.output,r.spec.output);return {output:example.output};}});assert.equal(result.success,true);assert.deepEqual(result.output,example.output);assert.equal(result.receipt.manifest,manifest.sha256);assert.equal(result.usage.turns,1);}}
+ finally{await rm(storageRoot,{recursive:true,force:true});}
+});
